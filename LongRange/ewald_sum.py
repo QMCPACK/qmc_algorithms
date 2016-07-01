@@ -92,7 +92,7 @@ def kspace_sum(rs, qs, rbasis, kappa, klim):
     return kspace_sum*4*math.pi/vol
 
 
-def ewald_sum(rs, qs, basis, kbasis):
+def ewald_sum(rs, qs, basis, kbasis, kappa):
     """
     Perform Ewald sum.
     Parameters:
@@ -100,27 +100,43 @@ def ewald_sum(rs, qs, basis, kbasis):
         qs -- list of charged
         basis -- real space basis
         kbasis -- reciprocal space basis
+        kappa -- splitting parameter
     """
 
-    kappa = 1.0  # Splitting parameter
     total_q2 = sum([q*q for q in qs])
-    old_total = 0.0
-    conv_tol = 1e-8  # Convergence test
+    total_q = sum(qs)
+    a1, a2, a3 = basis
+    vol = a1.dot(np.cross(a2, a3))
 
-    print('#lattice size, total, relative difference')
-    for lim in range(2, 8):
+    old_total = 0.0
+    conv_tol = 1e-12  # Convergence test
+
+    print_convergence = False
+    if print_convergence:
+        print('#lattice size, total, relative difference')
+    for lim in range(2, 12):
         rval = 0.5*rspace_sum(rs, qs, basis, kappa, lim)
         kval = 0.5*kspace_sum(rs, qs, kbasis, kappa, lim)
 
         # Self energy
         se = -total_q2*kappa/math.sqrt(math.pi)
-        total = rval+kval+se
+
+        # Background term.  Non-zero for charged systems.  Useful for
+        # summing pieces of systems (just the ions or just the electrons).
+        bg = -0.5 * total_q**2 * (math.pi/kappa**2/vol)
+
+        total = rval + kval + se + bg
 
         rel_diff = 0.5*(total-old_total)/(total+old_total)
-        print(lim, rval+kval+se, abs(rel_diff))
+        if print_convergence:
+            print(lim, rval+kval+se, abs(rel_diff))
         if abs(rel_diff) < conv_tol:
             break
         old_total = total
+
+    if abs(rel_diff) > conv_tol:
+        print("not converged!")
+
     return total
 
 
@@ -147,6 +163,8 @@ re1 = np.array([0.5, 0.0, 0.0])
 qs = [1.0, -1.0]
 rs = [r0, re1]
 
+kappa = 2.0
 basis = get_rspace_basis(a)
 kbasis = get_kspace_basis(basis)
-s = ewald_sum(rs, qs, basis, kbasis)
+s = ewald_sum(rs, qs, basis, kbasis, kappa)
+print(s)
