@@ -3,4 +3,7 @@ Scripts and supporting material to validate QMC codes.
 
 Primarily for QMCPACK (http://qmcpack.org/ ), but could be used more generally useful.
 
-LongRange - Ewald summation on a lattice for long range (Coulomb) potentials
+Directories:
+* LongRange - Ewald summation on a lattice for long range (Coulomb) potentials.
+* Variational - Demonstration of variational principle for energy of hydrogen and helium atoms.
+* Wavefunctions - Various functional forms for wavefunctions.
