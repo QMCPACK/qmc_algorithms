@@ -8,3 +8,5 @@ Directories:
 * StochasticReconfiguration - Stochastic reconfiguration for fixed population diffusion Monte Carlo.
 * Variational - Demonstration of variational principle for energy of hydrogen and helium atoms.
 * Wavefunctions - Various functional forms for wavefunctions.
+
+Many of these notebooks use Sympy for symbolic expressions.  The notebook [Intro to Sympy](Intro%20to%20Sympy.ipynb) contains a a short guide to Sympy as used in these notebooks.
