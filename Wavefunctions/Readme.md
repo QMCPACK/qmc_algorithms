@@ -1,7 +1,5 @@
 # Wavefunction Functional Forms
 
-Guide to contents in this directory.
-
 ## Splines
 ### Cubic splines
 Cubic splines are used in pseudopotentials and the Coulomb potential evaluation
@@ -29,6 +27,9 @@ Bsplines are used to represent periodic single particle orbitals and for Jastrow
 ### Plane Waves
 - [PlaneWaves.ipynb](Wavefunctions/PlaneWaves.ipynb) - Read from the Quantum Espresso HDF format and evaluate
 - [read_pw.py](Wavefunctions/read_pw.py) - Standalone Python code to read and evaluate
+
+### Orbital Rotation
+- [OrbitalRotation.ipynb](OrbitalRotation.ipynb) - Orbital rotation mixes and optimizes molecular orbitals
 
 
 ## Jastrow factors
