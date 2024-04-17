@@ -23,12 +23,9 @@ def read_basis_groups(atomic_basis_set):
     basis_set = []
     for basis_group in basis_groups:
         if basis_group.attrib['type'] != 'Gaussian':
-            print 'Expecting Gaussian type basisGroup'
-        #print basis_group.attrib['n']
+            print('Expecting Gaussian type basisGroup')
         n = int(basis_group.attrib['n'])
-        #print basis_group.attrib['l']
         ang_mom_l = int(basis_group.attrib['l'])
-        #print basis_group.attrib['type']
         zeta_list = []
         coef_list = []
         radfuncs = basis_group.findall('radfunc')
@@ -65,11 +62,11 @@ def parse_qmc_wf(fname, element_list):
     MO_coeff_node = tree.find('.//determinant/coefficient')
     MO_matrix = None
     if MO_coeff_node is None:
-        print 'Molecular orbital coefficients not found'
+        print('Molecular orbital coefficients not found')
     else:
-        #print 'MO_coeff = ',MO_coeff_node
+        #print('MO_coeff = ',MO_coeff_node)
         MO_size = int(MO_coeff_node.attrib['size'])
-        print 'MO coeff size = ',MO_size
+        print('MO coeff size = ',MO_size)
 
         MO_text = MO_coeff_node.text
         MO_text_entries = MO_text.split()
@@ -77,7 +74,7 @@ def parse_qmc_wf(fname, element_list):
 
         #MO_matrix = np.array(MO_values).reshape( (basis_size, MO_size) )
         MO_matrix = np.array(MO_values).reshape( (MO_size, basis_size) )
-        #print 'MO_values = ',MO_values
+        #print('MO_values = ',MO_values)
 
     return basis_sets, MO_matrix
 
@@ -129,21 +126,21 @@ if __name__ == '__main__':
     #basis_set, MO_matrix = parse_qmc_wf('he_sto3g.wfj.xml',['He'])
     #basis_set, MO_matrix = parse_qmc_wf('ne_def2_svp.wfnoj.xml',['Ne'])
     basis_sets, MO_matrix = parse_qmc_wf('hcn.wfnoj.xml',['He'])
-    #print basis_set
+    #print(basis_set)
 
     pos_list, elements = read_structure_file("hcn.structure.xml")
 
     gtos = GTO_centers(pos_list, elements, basis_sets)
     atomic_orbs =  gtos.eval_v(1.0, 0.0, 0.0)
-    print np.dot(MO_matrix, atomic_orbs)
+    print(np.dot(MO_matrix, atomic_orbs))
     #gto_list = []
     #for pos, element in zip(pos_list, elements):
     #  gto = gaussian_orbitals.GTO(basis_sets[element], pos)
     #  gto_list.append(gto)
-    #print gto_list
+    #print(gto_list)
       
     #gto = gaussian_orbitals.GTO(basis_set)
     #atomic_orbs =  gto.eval_v(1.0, 0.0, 0.0)
-    #print 'atomic orbs = ', atomic_orbs
-    #print 'shape = ',MO_matrix.shape
+    #print('atomic orbs = ', atomic_orbs)
+    #print('shape = ',MO_matrix.shape)
     #print np.dot(MO_matrix, atomic_orbs)
